@@ -2,17 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Models\usuario_model;
+
 class Home extends BaseController
 {
-	public function index(){
+        public function index()
+        {
                 $data['titulo'] = 'Coffe House';
                 echo view('common/head', $data);
                 echo view('common/navbar');
                 echo view('frontend/inicio');
                 echo view('common/scripts');
-	}
+        }
 
-        public function principal(){
+        public function principal()
+        {
                 $data['titulo'] = 'Principal';
                 echo view('common/head', $data);
                 echo view('common/navbar');
@@ -21,7 +25,8 @@ class Home extends BaseController
                 echo view('common/scripts');
         }
 
-	public function quienes_somos(){
+        public function quienes_somos()
+        {
                 $data['titulo'] = 'Quienes Somos';
                 echo view('common/head', $data);
                 echo view('common/navbar');
@@ -30,7 +35,8 @@ class Home extends BaseController
                 echo view('common/scripts');
         }
 
-        public function acerca_de(){
+        public function acerca_de()
+        {
                 $data['titulo'] = 'Acerca De';
                 echo view('common/head', $data);
                 echo view('common/navbar');
@@ -39,7 +45,8 @@ class Home extends BaseController
                 echo view('common/scripts');
         }
 
-        public function productos(){
+        public function productos()
+        {
                 $data['titulo'] = 'Productos';
                 echo view('common/head', $data);
                 echo view('common/navbar');
@@ -48,7 +55,18 @@ class Home extends BaseController
                 echo view('common/scripts');
         }
 
-        public function registro(){
+        public function consultas()
+        {
+                $data['titulo'] = 'Consultas';
+                echo view('common/head', $data);
+                echo view('common/navbar');
+                echo view('backend/admin/consultas');
+                echo view('common/footer');
+                echo view('common/scripts');
+        }
+
+        public function registro()
+        {
                 $data['titulo'] = 'Registro';
                 echo view('common/head', $data);
                 echo view('common/navbar');
@@ -56,7 +74,8 @@ class Home extends BaseController
                 echo view('common/scripts');
         }
 
-        public function login(){
+        public function login()
+        {
                 $data['titulo'] = 'Login';
                 echo view('common/head', $data);
                 echo view('common/navbar');

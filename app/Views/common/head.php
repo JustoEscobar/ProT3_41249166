@@ -11,7 +11,6 @@
     <!--Bootstrap-->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap/bootstrap.min.css'); ?>" />
     <!--Fuente-->
-    <!--Fuente Login-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
@@ -19,4 +18,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" crossorigin="anonymous">
     <!--Iconos login BoxIcons-->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!--DataTables-->
+    <link rel= "stylesheet" href="<?php echo base_url('assets/DataTables/datatables.min.css'); ?>"/>
+    <link rel= "stylesheet" href="<?php echo base_url('assets/DataTables/DataTables-1.10.25/css/dataTables.bootstrap4.min.css'); ?>"/>
+    <!--Material Icons-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>

@@ -1,35 +1,31 @@
 <?php
-namespace App\Controllers;
-Use App\Models\usuario_model;
-Use CodeIgniter\Controller;
 
-class usuario_controller extends Controller{
+namespace App\Controllers;
+
+use App\Models\usuario_model;
+use CodeIgniter\Controller;
+
+class usuario_controller extends Controller
+{
+    protected $usuario_model;
     public function __construct()
     {
-        helper(['form','url']);
+        helper(['form', 'url']);
+        $this->usuario_model = new usuario_model();
     }
 
-    public function create(){
-        $dato['titulo'] = 'Registro';
-        echo view('common/head', $dato);
-        echo view('common/navbar');
-        echo view('backend/usuario/registro');
-        echo view('common/scripts');
-    }
-
-    public function formValidation()
+    private function getValidationMessages()
     {
-        // Configurar mensajes de error personalizados
-        $messages = [
+        return [
             'nombre' => [
                 'required' => 'Nombre es obligatorio.',
                 'min_length' => 'Debe tener al menos 3 caracteres.',
-                'alpha' => 'Solo puede contener letras',
+                'regex_match' => 'Solo puede contener letras',
             ],
             'apellido' => [
                 'required' => 'Apellido es obligatorio.',
                 'min_length' => 'Debe tener al menos 3 caracteres.',
-                'alpha' => 'Solo puede contener letras',
+                'regex_match' => 'Solo puede contener letras',
             ],
             'usuario' => [
                 'required' => 'Usuario es obligatorio.',
@@ -50,35 +46,184 @@ class usuario_controller extends Controller{
                 'regex_match' => 'Minúscula, mayúscula, número y carácter especial.',
             ],
         ];
+    }
 
-        $validation = \Config\Services::validation();
-
-        $input = $this->validate([
-            'nombre' => 'required|min_length[3]|alpha',
-            'apellido' => 'required|min_length[3]|alpha',
+    private function getValidationRules($id_usuario = null)
+    {
+        return [
+            'nombre' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
+            'apellido' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
             'usuario' => 'required|min_length[3]|alpha_numeric',
-            'email' => 'required|min_length[4]|max_length[100]|valid_email|is_unique[usuario.email]',
-            'password' => 'required|min_length[8]|max_length[16]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/]',
-        ], $messages
-        );
+            'email' => 'required|min_length[4]|max_length[100]|valid_email|is_unique[usuario.email' . ($id_usuario ? ',id,' . $id_usuario : '') . ']',
+            'password' => 'required|min_length[8]|max_length[16]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/]'
+        ];
+    }
+
+    public function create()
+    {
+        $dato['titulo'] = 'Registro';
+        echo view('common/head', $dato);
+        echo view('common/navbar');
+        echo view('backend/usuario/registro');
+        echo view('common/scripts');
+    }
+
+    public function formValidation()
+    {
+        $validation = \Config\Services::validation();
+        $input = $this->validate($this->getValidationRules(), $this->getValidationMessages());
 
         $formModel = new usuario_model();
-        if (!$input){
+        if (!$input) {
             $data['titulo'] = 'Registro';
             echo view('common/head', $data);
             echo view('common/navbar');
-            echo view('backend/usuario/registro', ['validation' =>$this->validator]);
+            echo view('backend/usuario/registro', ['validation' => $this->validator]);
             echo view('common/scripts');
-        } else{
+        } else {
             $formModel->save([
                 'nombre' => $this->request->getVar('nombre'),
                 'apellido' => $this->request->getVar('apellido'),
                 'usuario' => $this->request->getVar('usuario'),
                 'email' => $this->request->getVar('email'),
-                'password' => password_hash($this->request->getVar('password'),PASSWORD_DEFAULT)
+                'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
             ]);
-            session()->setFlashdata('success','Usuario registrado con exito');
+            session()->setFlashdata('success', 'Usuario registrado con éxito');
             return $this->response->redirect('registro');
+        }
+    }
+
+    public function usuarios_registrados()
+    {
+        if ($this->isLoggedIn()) {
+            $sessionData = session()->get('logged_in');
+
+
+            if (!is_array($sessionData)) {
+                $sessionData = [];
+            }
+
+            $data = [
+                'titulo' => 'Usuarios',
+                'perfil_id' => $sessionData['perfil_id'] ?? 'No disponible',
+                'nombre' => $sessionData['nombre'] ?? 'No disponible',
+                'baja' => $sessionData['baja'] ?? 'No disponible',
+                'usuarios' => $this->usuario_model->getUsuariosNoElim()
+            ];
+
+            echo view('common/head', $data);
+            echo view('common/navbar');
+            echo view('backend/admin/usuarios', $data);
+            echo view('common/footer');
+            echo view('common/scripts');
+        } else {
+            return redirect()->to('login');
+        }
+    }
+
+    private function isLoggedIn()
+    {
+        return session()->has('logged_in') && session()->get('logged_in') !== false;
+    }
+
+    public function edit()
+    {
+        $model = new usuario_model();
+        $validation = \Config\Services::validation();
+
+        $id_usuario = session()->get('id_usuario');
+
+        $data['usuario'] = $model->getUserId($id_usuario);
+        $data['titulo'] = 'Mis Datos';
+        $data['validation'] = $validation;
+
+        echo view('common/head', $data);
+        echo view('common/navbar');
+        echo view('backend/usuario/datos_usuario', $data);
+        echo view('common/scripts');
+    }
+
+    public function update($id_usuario)
+    {
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'nombre' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
+            'apellido' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
+            'usuario' => 'required|min_length[3]|alpha_numeric',
+            'email' => 'required|min_length[4]|max_length[100]|valid_email' . ($id_usuario ? '|is_unique[usuario.email,id_usuario,' . $id_usuario . ']' : ''),
+            'password' => 'permit_empty|min_length[8]|max_length[16]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/]'
+        ];
+        if (!$this->validate($rules, $this->getValidationMessages())) {
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+        } else {
+            $userModel = new usuario_model();
+            $data = [
+                'nombre' => $this->request->getVar('nombre'),
+                'apellido' => $this->request->getVar('apellido'),
+                'usuario' => $this->request->getVar('usuario'),
+                'email' => $this->request->getVar('email')
+            ];
+
+            if ($this->request->getVar('password')) {
+                $data['password'] = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
+            }
+
+            $userModel->update($id_usuario, $data);
+
+            session()->setFlashdata('success', 'Datos actualizados con éxito');
+            return redirect()->to(base_url('datos_usuario'));
+        }
+    }
+
+    public function editAdmin($id_usuario)
+    {
+        $model = new usuario_model();
+        $validation = \Config\Services::validation();
+
+        $data['usuario'] = $model->getUserId($id_usuario);
+        $data['titulo'] = 'Modificar Usuario';
+        $data['validation'] = $validation;
+
+        echo view('common/head', $data);
+        echo view('common/navbar');
+        echo view('backend/admin/modificar_usuario', $data);
+        echo view('common/scripts');
+    }
+
+    public function updateAdmin($id_usuario)
+    {
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'nombre' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
+            'apellido' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
+            'usuario' => 'required|min_length[3]|alpha_numeric',
+            'email' => 'required|min_length[4]|max_length[100]|valid_email|is_unique[usuario.email,id_usuario,' . $id_usuario . ']'
+        ];
+
+        if (!$this->validate($rules, $this->getValidationMessages())) {
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+        } else {
+            $userModel = new usuario_model();
+            $data = [
+                'nombre' => $this->request->getVar('nombre'),
+                'apellido' => $this->request->getVar('apellido'),
+                'usuario' => $this->request->getVar('usuario'),
+                'email' => $this->request->getVar('email')
+            ];
+
+            if ($this->request->getVar('password')) {
+                $data['password'] = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
+            }
+
+            if ($userModel->update($id_usuario, $data)) {
+                session()->setFlashdata('success', 'Datos actualizados con éxito');
+            } else {
+                session()->setFlashdata('fail', 'Error al actualizar los datos');
+            }
+
+            return redirect()->to(base_url("modificar_usuario/". $id_usuario));
         }
     }
 }

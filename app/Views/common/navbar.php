@@ -33,25 +33,19 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2" href="<?php echo base_url('quienes_somos'); ?>">
-                                        <i class="fa-solid fa-mug-saucer"></i> QUIENES SOMOS
+                                    <a class="nav-link mx-lg-2" href="<?php echo base_url('consultas'); ?>">
+                                        <i class="fa-solid fa-mug-saucer"></i> CONSULTAS
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2" href="<?php echo base_url('acerca_de'); ?>">
-                                        <i class="fas fa-info-circle"></i> ACERCA DE
+                                    <a class="nav-link mx-lg-2" href="<?php echo base_url('usuarios'); ?>">
+                                        <i class="fas fa-info-circle"></i> USUARIOS
                                     </a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fab fa-shopify"></i> PRODUCTOS
+                                <li class="nav-item">
+                                    <a class="nav-link mx-lg-2" href="<?php echo base_url('#'); ?>">
+                                        <i class="fas fa-info-circle"></i> PRODUCTOS
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark">
-                                        <li><a class="dropdown-item" href="<?php echo base_url('productos'); ?>">CAFETERIA</a></li>
-                                        <li><a class="dropdown-item" href="#">INFUSIONES</a></li>
-                                        <li><a class="dropdown-item" href="#">SALADOS</a></li>
-                                        <li><a class="dropdown-item" href="#">DULCES</a></li>
-                                    </ul>
                                 </li>
                             </ul>
                             <ul class="nav navbar-nav ml-auto">
@@ -60,7 +54,7 @@
                                         <i class="fas fa-user-cog"></i> Admin: <?php echo session('nombre'); ?>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="<?php echo base_url('#'); ?>">
+                                        <a class="dropdown-item" href="<?php echo base_url('datos_usuario'); ?>">
                                             <i class="far fa-edit"></i> Mis Datos
                                         </a>
                                         <a class="dropdown-item dropdown-menu-dark" href="<?php echo base_url('logout'); ?>">
@@ -115,7 +109,7 @@
                                         <a class="dropdown-item" href="<?php echo base_url('#'); ?>">
                                             <i class="fas fa-shopping-bag"></i> Mis Compras
                                         </a>
-                                        <a class="dropdown-item dropdown-menu-dark" href="<?php echo base_url('#'); ?>">
+                                        <a class="dropdown-item dropdown-menu-dark" href="<?php echo base_url('datos_usuario'); ?>">
                                             <i class="far fa-edit"></i> Mis Datos
                                         </a>
                                         <a class="dropdown-item dropdown-menu-dark" href="<?php echo base_url('logout'); ?>">

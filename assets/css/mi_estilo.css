@@ -696,3 +696,143 @@ footer p{
     color: #fff;
 }
 
+/* ESTILOS PARTE DE ADMINISTRADOR - DATATABLES */
+
+.datatable-container{
+    background-color:#2a3338;
+    border-radius:3px;
+    color:white;
+    width:600px;
+    margin:0 auto;
+    font-size:12px;
+
+}
+
+.datatable-container .header-tools{
+    border-bottom:solid 1px;
+    padding:12px;
+    display:flex;
+    align-items:baseline;
+}
+
+.datatable-container .header-tools .search{
+    width:20%;
+}
+
+.datatable-container .header-tools .search .search-input{
+    width:100%;
+    background-color:rgb(61,68,73);
+    display:block;
+    box-sizing:border-box;
+    border-radius:3px;
+    border:solid 1px rgb(61,68,73);
+    color:white;
+}
+
+.datatable-container .header-tools .tools{
+    width: 90%;
+}
+
+.datatable-container .header-tools .tools ul{
+    margin:0;
+    padding: 0;
+    display: flex;
+    justify-content:start;
+    align-items:baseline;
+}
+
+.datatable-container .header-tools .tools ul li{
+    display:inline-block;
+    margin:0 2px;
+    align-items: baseline;
+}
+
+.datatable-container .footer-tools{
+    padding:12px;
+    display: flex;
+    align-items:baseline;
+}
+
+.datatable-container .footer-tools .list-items{
+    width:50%;
+}
+
+.datatable-container .footer-tools .pages{
+    margin-left:auto;
+    margin-right:0;
+    width:50%;
+}
+
+.datatable-container .footer-tools .pages ul{
+    margin:0;
+    padding:0;
+    display:flex;
+    align-items:baseline;
+    justify-content:flex-end;
+}
+
+.datatable-container .footer-tools .pages ul li{
+    display:inline-block;
+    margin:0 2px;
+}
+
+.datatable-container .footer-tools .pages ul li button,
+.datatable-container .header-tools .tools ul li button{
+    color:white;
+    width:100%;
+    box-sizing:border-box;
+    border:0;
+    border-radius:3px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.datatable-container .footer-tools .pages ul li button:hover,
+.datatable-container .header-tools .tools ul li button:hover{
+    background:#3282b8;
+    color:white;
+}
+
+.datatable-container .footer-tools .pages ul li span.active{
+    background-color:#3282b8;
+    border-radius:3px;
+}
+
+.datatable-container .footer-tools .pages ul li button,
+.datatable-container .footer-tools .pages ul li span,
+.datatable-container .header-tools .tools ul li button{
+    padding:6px 12px;
+}
+
+.datatable-container .datatable{
+    border-collapse:collapse;
+    width:100%;
+}
+
+.datatable-container .datatable,
+.datatable-container .datatable th,
+.datatable-container .datatable td{
+    padding:12px 12px;
+}
+
+.datatable-container .datatable th{
+    font-weight:bolder;
+    text-align:left;
+    border-bottom:solid 1px rgb(61,68,73);
+}
+
+.datatable-container .datatable td{
+    border-bottom:solid 1px rgb(61,68,73);
+}
+
+.datatable-container .datatable tbody tr:nth-child(even){
+    background-color:rgb(61,68,73);
+}
+
+.datatable-container .datatable tbody tr:hover{
+    background-color:#3282b8;
+}
+
+.icono-color{
+    color: white;
+}
