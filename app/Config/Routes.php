@@ -33,10 +33,10 @@ $routes->post('actualizar_datos/(:num)', 'usuario_controller::update/$1');
 $routes->get('usuarios', 'usuario_controller::usuarios_registrados');
 $routes->get('modificar_usuario/(:num)', 'usuario_controller::editAdmin/$1');
 $routes->post('actualizar_usuario/(:num)', 'usuario_controller::updateAdmin/$1');
-
-/*Falta hacer*/
-$routes->get('alta_usuario', 'usuario_controller:: ');
-$routes->get('baja_usuario', 'usuario_controller:: ');
+$routes->get('baja_usuario/(:num)', 'usuario_controller::baja_logica_usuario/$1');
+$routes->get('usuarios_eliminados', 'usuario_controller::usuarios_eliminados');
+$routes->get('activar_usuario/(:num)', 'usuario_controller::activar_usuario/$1');
+$routes->get('alta_usuario', 'usuario_controller::');
 
 /*Muestra todas las consultas del formulario Contacto*/
 $routes->get('consultas', 'Home::consultas');

@@ -223,7 +223,58 @@ class usuario_controller extends Controller
                 session()->setFlashdata('fail', 'Error al actualizar los datos');
             }
 
-            return redirect()->to(base_url("modificar_usuario/". $id_usuario));
+            return redirect()->to(base_url("modificar_usuario/" . $id_usuario));
+        }
+    }
+
+    public function baja_logica_usuario($id_usuario)
+    {
+        $userModel = new usuario_model();
+        $data = ['baja' => 'SI'];
+
+        if ($userModel->update($id_usuario, $data)) {
+            return redirect()->to(base_url('usuarios'))->with('success', 'Usuario dado de baja exitosamente.');
+        } else {
+            return redirect()->to(base_url('usuarios'))->with('fail', 'No se pudo dar de baja al usuario.');
+        }
+    }
+
+    public function usuarios_eliminados()
+    {
+        if ($this->isLoggedIn()) {
+            $sessionData = session()->get('logged_in');
+
+            if (!is_array($sessionData)) {
+                $sessionData = [];
+            }
+
+            $data = [
+                'titulo' => 'Usuarios Eliminados',
+                'perfil_id' => $sessionData['perfil_id'] ?? 'No disponible',
+                'nombre' => $sessionData['nombre'] ?? 'No disponible',
+                'baja' => $sessionData['baja'] ?? 'No disponible',
+                'usuarios' => $this->usuario_model->getUsuariosElim()
+            ];
+
+            echo view('common/head', $data);
+            echo view('common/navbar');
+            echo view('backend/admin/usuarios_eliminados', $data);
+            echo view('common/footer');
+            echo view('common/scripts');
+        } else {
+            return redirect()->to('login');
+        }
+    }
+
+    public function activar_usuario($id_usuario)
+    {
+        $userModel = new usuario_model();
+        $data = ['baja' => 'NO'];
+
+        if ($userModel->update($id_usuario, $data)) {
+            return redirect()->to(base_url('usuarios'))->with('success', 'Usuario dado de baja exitosamente.');
+        } else {
+            return redirect()->to(base_url('usuarios'))->with('fail', 'No se pudo dar de baja al usuario.');
         }
     }
 }

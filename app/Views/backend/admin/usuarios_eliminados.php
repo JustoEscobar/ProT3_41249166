@@ -1,10 +1,10 @@
 <?php if (empty($usuarios)) { ?>
     <div class="container section-padding-team">
         <div class="well text-uppercase">
-            <h5><b>No hay Usuarios registrados</b></h5>
+            <h5><b>No hay Usuarios Eliminados</b></h5>
         </div>
         <?php if (session()->has('logged_in') && $perfil_id == '1') { ?>
-            <a type="button" class="btn btn-success" href="<?php echo base_url('alta_usuario'); ?>">AGREGAR</a>
+            <a type="button" class="btn btn-success" href="<?php echo base_url('usuarios_agrega'); ?>">AGREGAR</a>
             <a type="button" class="btn btn-danger" href="<?php echo base_url('usuarios_eliminados'); ?>">ELIMINADOS</a>
             <br> <br>
         <?php } ?>
@@ -12,23 +12,23 @@
 <?php } else { ?>
     <div class="container section-padding-team">
         <div class="well text-uppercase">
-            <h5><b>Todos los Usuarios</b></h5>
+            <h5><b>Usuarios dados de Baja</b></h5>
         </div>
         <br>
         <div class="container datatable-container table-responsive">
             <div class="header-tools">
-                <div class="tools">
+                <!-- <div class="tools">
                     <ul>
                         <li>
-                            <a href="<?php echo base_url('alta_usuario'); ?>">
-                                <i class="material-icons icono-color">group_add</i>Agregar</a>
+                            <a href="<?php echo base_url('usuarios_agrega'); ?>">
+                                <i class="material-icons icono-color">group_add</i></a>
                         </li>
                         <li>
                             <a href="<?php echo base_url('usuarios_eliminados'); ?>">
-                                <i class="material-icons icono-color">delete</i>Eliminados</a>
+                                <i class="material-icons icono-color">delete</i></a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
             <table id="mi_tabla" class="datatable">
                 <thead>
@@ -52,11 +52,8 @@
                             <td><?php echo $row['perfil_id']; ?></td>
                             <td><?php echo $row['baja']; ?></td>
                             <td>
-                                <a href="<?php echo base_url("modificar_usuario/{$row['id_usuario']}"); ?>">
-                                    <i class="material-icons icono-color">edit</i>
-                                </a>
-                                <a href="<?php echo base_url("baja_usuario/{$row['id_usuario']}"); ?>">
-                                    <i class="material-icons icono-color" onclick="elimina_usuario()">delete</i>
+                                <a href="<?php echo base_url("activar_usuario/{$row['id_usuario']}"); ?>">
+                                    <i class="material-icons icono-color" onclick="elimina_usuario()">check</i>
                                 </a>
                             </td>
                         </tr>

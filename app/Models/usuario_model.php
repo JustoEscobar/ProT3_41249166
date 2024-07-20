@@ -27,6 +27,11 @@ class usuario_model extends Model
         return $this->where('baja', 'NO')->findAll();
     }
 
+    public function getUsuariosElim()
+    {
+        return $this->where('baja', 'SI')->findAll();
+    }
+
     public function getUserId($id_usuario)
     {
         return $this->where('id_usuario', $id_usuario)->first();
