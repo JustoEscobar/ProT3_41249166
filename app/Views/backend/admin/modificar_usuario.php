@@ -71,7 +71,7 @@
                             <span class="input-group-text">
                                 <i class="fa-solid fa-user"></i>
                             </span>
-                            <input name="perfil_id" type="text" class="form-control form-control-lg fs-6" placeholder="Perfil_id" value="<?= old('perfil_id', $usuario['perfil_id']); ?>" />
+                            <input name="perfil_id" type="text" class="form-control form-control-lg fs-6" placeholder="1-Admin 2-Cliente" value="<?= old('perfil_id', $usuario['perfil_id']); ?>" />
                             <?php if ($validation->getError('perfil_id')) { ?>
                                 <div class="error-message">
                                     <?= $validation->getError('perfil_id'); ?>

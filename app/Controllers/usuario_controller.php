@@ -157,32 +157,26 @@ class usuario_controller extends Controller
 
         $messages = [
             'nombre' => [
-                'required' => 'El campo nombre es obligatorio.',
-                'min_length' => 'El nombre debe tener al menos 3 caracteres.',
-                'regex_match' => 'El nombre solo puede contener letras y espacios.'
+                'required' => 'Nombre es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'regex_match' => 'Solo puede contener letras',
             ],
             'apellido' => [
-                'required' => 'El campo apellido es obligatorio.',
-                'min_length' => 'El apellido debe tener al menos 3 caracteres.',
-                'regex_match' => 'El apellido solo puede contener letras y espacios.'
+                'required' => 'Apellido es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'regex_match' => 'Solo puede contener letras',
             ],
             'usuario' => [
-                'required' => 'El campo usuario es obligatorio.',
-                'min_length' => 'El usuario debe tener al menos 3 caracteres.',
-                'alpha_numeric' => 'El usuario solo puede contener letras y números.'
+                'required' => 'Usuario es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'alpha_numeric' => 'Debe contener solo letras y números',
             ],
             'email' => [
-                'required' => 'El campo email es obligatorio.',
-                'min_length' => 'El email debe tener al menos 13 caracteres.',
-                'max_length' => 'El email no puede tener más de 100 caracteres.',
-                'valid_email' => 'Debe ser un email válido.',
-                'is_unique' => 'El email ya está registrado.'
-            ],
-            'password' => [
-                'permit_empty' => 'La contraseña puede estar vacía.',
-                'min_length' => 'La contraseña debe tener al menos 8 caracteres.',
-                'max_length' => 'La contraseña no puede tener más de 16 caracteres.',
-                'regex_match' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.'
+                'required' => 'Email es obligatorio.',
+                'min_length' => 'Debe tener al menos 4 caracteres.',
+                'max_length' => 'No debe exceder los 100 caracteres.',
+                'valid_email' => 'Por favor ingrese un email válido.',
+                'is_unique' => 'Este email ya está registrado.',
             ]
         ];
 
@@ -214,7 +208,6 @@ class usuario_controller extends Controller
         if ($this->request->getVar('password')) {
             $data['password'] = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
         }
-
         $userModel->update($id_usuario, $data);
 
         session()->setFlashdata('success', 'Datos actualizados con éxito');
@@ -250,26 +243,26 @@ class usuario_controller extends Controller
 
         $messages = [
             'nombre' => [
-                'required' => 'El campo nombre es obligatorio.',
-                'min_length' => 'El nombre debe tener al menos 3 caracteres.',
-                'regex_match' => 'El nombre solo puede contener letras y espacios.'
+                'required' => 'Nombre es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'regex_match' => 'Solo puede contener letras',
             ],
             'apellido' => [
-                'required' => 'El campo apellido es obligatorio.',
-                'min_length' => 'El apellido debe tener al menos 3 caracteres.',
-                'regex_match' => 'El apellido solo puede contener letras y espacios.'
+                'required' => 'Apellido es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'regex_match' => 'Solo puede contener letras',
             ],
             'usuario' => [
-                'required' => 'El campo usuario es obligatorio.',
-                'min_length' => 'El usuario debe tener al menos 3 caracteres.',
-                'alpha_numeric' => 'El usuario solo puede contener letras y números.'
+                'required' => 'Usuario es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'alpha_numeric' => 'Debe contener solo letras y números',
             ],
             'email' => [
-                'required' => 'El campo email es obligatorio.',
-                'min_length' => 'El email debe tener al menos 13 caracteres.',
-                'max_length' => 'El email no puede tener más de 100 caracteres.',
-                'valid_email' => 'Debe ser un email válido.',
-                'is_unique' => 'El email ya está registrado.'
+                'required' => 'Email es obligatorio.',
+                'min_length' => 'Debe tener al menos 4 caracteres.',
+                'max_length' => 'No debe exceder los 100 caracteres.',
+                'valid_email' => 'Por favor ingrese un email válido.',
+                'is_unique' => 'Este email ya está registrado.',
             ],
             'perfil_id' => [
                 'required' => 'Perfil ID es obligatorio.',
