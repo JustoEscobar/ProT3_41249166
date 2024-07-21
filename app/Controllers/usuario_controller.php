@@ -54,8 +54,8 @@ class usuario_controller extends Controller
             'nombre' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
             'apellido' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
             'usuario' => 'required|min_length[3]|alpha_numeric',
-            'email' => 'required|min_length[4]|max_length[100]|valid_email|is_unique[usuario.email' . ($id_usuario ? ',id,' . $id_usuario : '') . ']',
-            'password' => 'required|min_length[8]|max_length[16]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/]'
+            'email' => 'required|min_length[13]|max_length[100]|valid_email|is_unique[usuario.email' . ($id_usuario ? ',id,' . $id_usuario : '') . ']',
+            'password' => 'required|min_length[8]|max_length[16]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/]',
         ];
     }
 
@@ -151,29 +151,74 @@ class usuario_controller extends Controller
             'nombre' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
             'apellido' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
             'usuario' => 'required|min_length[3]|alpha_numeric',
-            'email' => 'required|min_length[4]|max_length[100]|valid_email' . ($id_usuario ? '|is_unique[usuario.email,id_usuario,' . $id_usuario . ']' : ''),
+            'email' => 'required|min_length[13]|max_length[100]|valid_email' . ($id_usuario ? '|is_unique[usuario.email,id_usuario,' . $id_usuario . ']' : ''),
             'password' => 'permit_empty|min_length[8]|max_length[16]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/]'
         ];
-        if (!$this->validate($rules, $this->getValidationMessages())) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
-        } else {
-            $userModel = new usuario_model();
-            $data = [
-                'nombre' => $this->request->getVar('nombre'),
-                'apellido' => $this->request->getVar('apellido'),
-                'usuario' => $this->request->getVar('usuario'),
-                'email' => $this->request->getVar('email')
-            ];
 
-            if ($this->request->getVar('password')) {
-                $data['password'] = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
-            }
+        $messages = [
+            'nombre' => [
+                'required' => 'El campo nombre es obligatorio.',
+                'min_length' => 'El nombre debe tener al menos 3 caracteres.',
+                'regex_match' => 'El nombre solo puede contener letras y espacios.'
+            ],
+            'apellido' => [
+                'required' => 'El campo apellido es obligatorio.',
+                'min_length' => 'El apellido debe tener al menos 3 caracteres.',
+                'regex_match' => 'El apellido solo puede contener letras y espacios.'
+            ],
+            'usuario' => [
+                'required' => 'El campo usuario es obligatorio.',
+                'min_length' => 'El usuario debe tener al menos 3 caracteres.',
+                'alpha_numeric' => 'El usuario solo puede contener letras y números.'
+            ],
+            'email' => [
+                'required' => 'El campo email es obligatorio.',
+                'min_length' => 'El email debe tener al menos 13 caracteres.',
+                'max_length' => 'El email no puede tener más de 100 caracteres.',
+                'valid_email' => 'Debe ser un email válido.',
+                'is_unique' => 'El email ya está registrado.'
+            ],
+            'password' => [
+                'permit_empty' => 'La contraseña puede estar vacía.',
+                'min_length' => 'La contraseña debe tener al menos 8 caracteres.',
+                'max_length' => 'La contraseña no puede tener más de 16 caracteres.',
+                'regex_match' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.'
+            ]
+        ];
 
-            $userModel->update($id_usuario, $data);
+        // Validar los datos de entrada
+        if (!$this->validate($rules, $messages)) {
+            // Volver a cargar la vista de edición con los datos antiguos y mensajes de error
+            $model = new usuario_model();
+            $id_usuario = session()->get('id_usuario');
+            $data['usuario'] = $model->getUserId($id_usuario);
+            $data['titulo'] = 'Mis Datos';
+            $data['validation'] = $this->validator;  // Pasar la instancia del validador
 
-            session()->setFlashdata('success', 'Datos actualizados con éxito');
-            return redirect()->to(base_url('datos_usuario'));
+            echo view('common/head', $data);
+            echo view('common/navbar');
+            echo view('backend/usuario/datos_usuario', $data);
+            echo view('common/scripts');
+            return;
         }
+
+        // Si la validación es correcta, actualizar los datos del usuario
+        $userModel = new usuario_model();
+        $data = [
+            'nombre' => $this->request->getVar('nombre'),
+            'apellido' => $this->request->getVar('apellido'),
+            'usuario' => $this->request->getVar('usuario'),
+            'email' => $this->request->getVar('email')
+        ];
+
+        if ($this->request->getVar('password')) {
+            $data['password'] = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
+        }
+
+        $userModel->update($id_usuario, $data);
+
+        session()->setFlashdata('success', 'Datos actualizados con éxito');
+        return redirect()->to(base_url('datos_usuario'));
     }
 
     public function editAdmin($id_usuario)
@@ -199,23 +244,61 @@ class usuario_controller extends Controller
             'nombre' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
             'apellido' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
             'usuario' => 'required|min_length[3]|alpha_numeric',
-            'email' => 'required|min_length[4]|max_length[100]|valid_email|is_unique[usuario.email,id_usuario,' . $id_usuario . ']'
+            'email' => 'required|min_length[13]|max_length[100]|valid_email|is_unique[usuario.email,id_usuario,' . $id_usuario . ']',
+            'perfil_id' => 'required|in_list[1,2]'
         ];
 
-        if (!$this->validate($rules, $this->getValidationMessages())) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
+        $messages = [
+            'nombre' => [
+                'required' => 'El campo nombre es obligatorio.',
+                'min_length' => 'El nombre debe tener al menos 3 caracteres.',
+                'regex_match' => 'El nombre solo puede contener letras y espacios.'
+            ],
+            'apellido' => [
+                'required' => 'El campo apellido es obligatorio.',
+                'min_length' => 'El apellido debe tener al menos 3 caracteres.',
+                'regex_match' => 'El apellido solo puede contener letras y espacios.'
+            ],
+            'usuario' => [
+                'required' => 'El campo usuario es obligatorio.',
+                'min_length' => 'El usuario debe tener al menos 3 caracteres.',
+                'alpha_numeric' => 'El usuario solo puede contener letras y números.'
+            ],
+            'email' => [
+                'required' => 'El campo email es obligatorio.',
+                'min_length' => 'El email debe tener al menos 13 caracteres.',
+                'max_length' => 'El email no puede tener más de 100 caracteres.',
+                'valid_email' => 'Debe ser un email válido.',
+                'is_unique' => 'El email ya está registrado.'
+            ],
+            'perfil_id' => [
+                'required' => 'Perfil ID es obligatorio.',
+                'in_list' => 'Perfil ID debe ser 1 o 2.',
+            ]
+        ];
+
+        // Validar los datos de entrada
+        if (!$this->validate($rules, $messages)) {
+            // Cargar la vista de edición con los datos antiguos y mensajes de error
+            $model = new usuario_model();
+            $data['usuario'] = $model->getUserId($id_usuario);
+            $data['titulo'] = 'Modificar Usuario';
+            $data['validation'] = $this->validator; // Pasar la instancia del validador
+
+            echo view('common/head', $data);
+            echo view('common/navbar');
+            echo view('backend/admin/modificar_usuario', $data);
+            echo view('common/scripts');
+            return;
         } else {
             $userModel = new usuario_model();
             $data = [
                 'nombre' => $this->request->getVar('nombre'),
                 'apellido' => $this->request->getVar('apellido'),
                 'usuario' => $this->request->getVar('usuario'),
-                'email' => $this->request->getVar('email')
+                'email' => $this->request->getVar('email'),
+                'perfil_id' => $this->request->getVar('perfil_id')
             ];
-
-            if ($this->request->getVar('password')) {
-                $data['password'] = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
-            }
 
             if ($userModel->update($id_usuario, $data)) {
                 session()->setFlashdata('success', 'Datos actualizados con éxito');
@@ -272,9 +355,90 @@ class usuario_controller extends Controller
         $data = ['baja' => 'NO'];
 
         if ($userModel->update($id_usuario, $data)) {
-            return redirect()->to(base_url('usuarios'))->with('success', 'Usuario dado de baja exitosamente.');
+            return redirect()->to(base_url('usuarios'))->with('success', 'Usuario activado exitosamente.');
         } else {
-            return redirect()->to(base_url('usuarios'))->with('fail', 'No se pudo dar de baja al usuario.');
+            return redirect()->to(base_url('usuarios'))->with('fail', 'No se pudo activar usuario.');
+        }
+    }
+
+    public function alta_usuario()
+    {
+        $dato['titulo'] = 'Alta Usuario';
+        echo view('common/head', $dato);
+        echo view('common/navbar');
+        echo view('backend/admin/alta_usuario');
+        echo view('common/scripts');
+    }
+
+    public function formValidation_alta()
+    {
+        $validation = \Config\Services::validation();
+
+        // Definir las reglas de validación
+        $rules = [
+            'nombre' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
+            'apellido' => 'required|min_length[3]|regex_match[/^[a-zA-Z\s]+$/]',
+            'usuario' => 'required|min_length[3]|alpha_numeric',
+            'email' => 'required|min_length[4]|max_length[100]|valid_email|is_unique[usuario.email]',
+            'password' => 'required|min_length[8]|max_length[16]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/]',
+            'perfil_id' => 'required|in_list[1,2]'
+        ];
+
+        // Definir los mensajes de validación
+        $messages = [
+            'nombre' => [
+                'required' => 'Nombre es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'regex_match' => 'Solo puede contener letras y espacios.',
+            ],
+            'apellido' => [
+                'required' => 'Apellido es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'regex_match' => 'Solo puede contener letras y espacios.',
+            ],
+            'usuario' => [
+                'required' => 'Usuario es obligatorio.',
+                'min_length' => 'Debe tener al menos 3 caracteres.',
+                'alpha_numeric' => 'Debe contener solo letras y números.',
+            ],
+            'email' => [
+                'required' => 'Email es obligatorio.',
+                'min_length' => 'Debe tener al menos 4 caracteres.',
+                'max_length' => 'No debe exceder los 100 caracteres.',
+                'valid_email' => 'Por favor ingrese un email válido.',
+                'is_unique' => 'Este email ya está registrado.',
+            ],
+            'password' => [
+                'required' => 'Contraseña es obligatoria.',
+                'min_length' => 'Debe tener al menos 8 caracteres.',
+                'max_length' => 'No debe exceder los 16 caracteres.',
+                'regex_match' => 'Debe contener minúscula, mayúscula, número y carácter especial.',
+            ],
+            'perfil_id' => [
+                'required' => 'Perfil ID es obligatorio.',
+                'in_list' => 'Perfil ID debe ser 1 o 2.',
+            ]
+        ];
+
+        // Validar los datos de entrada
+        if (!$this->validate($rules, $messages)) {
+            $data['titulo'] = 'Alta Usuario';
+            echo view('common/head', $data);
+            echo view('common/navbar');
+            echo view('backend/admin/alta_usuario', ['validation' => $this->validator]);
+            echo view('common/scripts');
+        } else {
+            $formModel = new \App\Models\usuario_model();
+            $formModel->save([
+                'nombre' => $this->request->getVar('nombre'),
+                'apellido' => $this->request->getVar('apellido'),
+                'usuario' => $this->request->getVar('usuario'),
+                'email' => $this->request->getVar('email'),
+                'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
+                'perfil_id' => $this->request->getVar('perfil_id')
+            ]);
+            session()->setFlashdata('success', 'Usuario dado de alta con éxito');
+            return $this->response->redirect(base_url('alta_usuario'));
         }
     }
 }

@@ -9,7 +9,7 @@
         <nav class="navbar navbar-expand-lg fixed-top bg-nav">
             <div class="container-fluid">
                 <a class="navbar-brand me-auto" href="<?php echo base_url('inicio'); ?>">
-                    <img src="assets/img/logo_cafe_sf.png" alt="LOGO_INICIO" class="logo-img">
+                    <img src="<?php echo base_url('assets/img/logo_cafe_sf.png'); ?>" alt="LOGO_INICIO" class="logo-img">
                 </a>
                 <button class="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -18,7 +18,7 @@
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
                             <a href="<?php echo base_url('inicio'); ?>">
-                                <img src="assets/img/logo_cafe_sf.png" alt="LOGO_INICIO" class="logo-img">
+                                <img src="<?php echo base_url('assets/img/logo_cafe_sf.png'); ?>" alt="LOGO_INICIO" class="logo-img">
                             </a>
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -43,7 +43,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mx-lg-2" href="<?php echo base_url('#'); ?>">
+                                    <a class="nav-link mx-lg-2" href="<?php echo base_url('productos_admin'); ?>">
                                         <i class="fas fa-info-circle"></i> PRODUCTOS
                                     </a>
                                 </li>

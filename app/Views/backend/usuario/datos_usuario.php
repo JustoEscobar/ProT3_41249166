@@ -2,14 +2,14 @@
 <div class="custom-login">
     <div class="row vh-100 g-0 bg-form">
         <div class="col-lg-6 position-relative d-lg-block">
-            <div class="bg-holder" style="background-image: url(assets/img/login/img_login.jpg);">
+            <div class="bg-holder" style="background-image: url(<?= base_url('assets/img/login/img_login.jpg'); ?>);">
             </div>
         </div>
         <div class="col-lg-6">
             <div class="row align-items-center justify-content-center h-100 g-0 px-4 px-sm-0">
                 <div class="col col-sm-6 col-lg-7 col-xl-6">
                     <a class="d-flex justify-content-center" href="<?= base_url('inicio'); ?>">
-                        <img src="assets/img/logo_cafe2_sf.png" alt="LOGO_INICIO" width="100">
+                        <img src="<?php echo base_url('assets/img/logo_cafe2_sf.png'); ?>" alt="LOGO_INICIO" width="100">
                     </a>
                     <div class="text-center mb-5">
                         <h3 class="fw-bold">Modificar Usuario</h3>

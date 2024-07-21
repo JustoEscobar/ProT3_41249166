@@ -36,13 +36,14 @@ $routes->post('actualizar_usuario/(:num)', 'usuario_controller::updateAdmin/$1')
 $routes->get('baja_usuario/(:num)', 'usuario_controller::baja_logica_usuario/$1');
 $routes->get('usuarios_eliminados', 'usuario_controller::usuarios_eliminados');
 $routes->get('activar_usuario/(:num)', 'usuario_controller::activar_usuario/$1');
-$routes->get('alta_usuario', 'usuario_controller::');
+$routes->get('alta_usuario', 'usuario_controller::alta_usuario');
+$routes->post('/enviar-form-alta', 'usuario_controller::formValidation_alta');
 
+/*Falta hacer*/
 /*Muestra todas las consultas del formulario Contacto*/
-$routes->get('consultas', 'Home::consultas');
-
+$routes->get('consultas', 'consulta_controller::consultas');
 /*Rutas Backend/Administrador(Alta-Baja-Modificacion) de Productos*/
-$routes->get('#', 'producto_controller:: ');
+$routes->get('productos_admin', 'producto_controller::productos_admin');
 $routes->get('alta_producto', 'producto_controller:: ');
 $routes->get('baja_producto', 'producto_controller:: ');
 $routes->get('modificar_producto', 'producto_controller:: ');

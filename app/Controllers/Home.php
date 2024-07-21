@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\usuario_model;
-
 class Home extends BaseController
 {
         public function index()
@@ -51,16 +49,6 @@ class Home extends BaseController
                 echo view('common/head', $data);
                 echo view('common/navbar');
                 echo view('frontend/productos');
-                echo view('common/footer');
-                echo view('common/scripts');
-        }
-
-        public function consultas()
-        {
-                $data['titulo'] = 'Consultas';
-                echo view('common/head', $data);
-                echo view('common/navbar');
-                echo view('backend/admin/consultas');
                 echo view('common/footer');
                 echo view('common/scripts');
         }

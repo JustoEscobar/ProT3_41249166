@@ -9,7 +9,7 @@
             <div class="row align-items-center justify-content-center h-100 g-0 px-4 px-sm-0">
                 <div class="col col-sm-6 col-lg-7 col-xl-6">
                     <a class="d-flex justify-content-center" href="<?= base_url('inicio'); ?>">
-                        <img src="<?= base_url('assets/img/logo_cafe2_sf.png'); ?>" alt="LOGO_INICIO" width="100">
+                        <img src="<?php echo base_url('assets/img/logo_cafe2_sf.png'); ?>" alt="LOGO_INICIO" width="100">
                     </a>
                     <div class="text-center mb-5">
                         <h3 class="fw-bold">Modificar Usuario</h3>
@@ -64,6 +64,17 @@
                             <?php if ($validation->getError('email')) { ?>
                                 <div class="error-message">
                                     <?= $validation->getError('email'); ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input name="perfil_id" type="text" class="form-control form-control-lg fs-6" placeholder="Perfil_id" value="<?= old('perfil_id', $usuario['perfil_id']); ?>" />
+                            <?php if ($validation->getError('perfil_id')) { ?>
+                                <div class="error-message">
+                                    <?= $validation->getError('perfil_id'); ?>
                                 </div>
                             <?php } ?>
                         </div>
